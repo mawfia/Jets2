@@ -6,8 +6,8 @@
 <title>Welcome to the Hanger</title>
 </head>
 <body>
-	<a href="hmenu1.do">Hanger</a><br />
-	<a href="pmenu1.jsp">Barracks</a>
+	<a href="hmenu1.do?index=1">Hanger</a><br />
+	<a href="pmenu1.jsp?">Barracks</a>
 
 	<c:choose>
 		<c:when test="${! empty images}">

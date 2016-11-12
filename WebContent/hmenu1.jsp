@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,21 +15,30 @@
 	
 	<fieldset>
 	<legend>View Fleet</legend>
+	<c:choose>
+		<c:when test="${empty index}">
+       		<img src="${fleet[0].photo}" />
+    	</c:when>
+    	<c:otherwise>
+		<c:set var="i" scope="page" value="${index}"/>
+			<img src="${fleet[i].photo}" />    
+		</c:otherwise>
+	</c:choose>
 	<form action="hmenu1.do" method="POST">
-		<input list="browsers1" name="browsers2" placeholder="???" pattern="\w" title="1-2 digits">
-		<datalist id="browsers3"> 
+		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="???" title="1-2 digits">
+		<datalist id="json-datalist"> 
 			<c:forEach var="jet" items="${fleet}">
 
 				<option value="${jet.manufacturer}">${jet.model}</option>
 			</c:forEach> 
 		</datalist>
-		<button name="operation" value="Previous">Previous</button>
-		<button name="operation" value="Home">Home</button>
-		<button name="operation" value="Next">Next</button>
+		<button name="operation" value="-1">Previous</button>
+		<button name="operation" value="0">Home</button>
+		<button name="operation" value="1">Next</button>
 		<input type="submit" value="Select" name="browsers4" autofocus>
 		<button name="operation" value="Update">Update</button>
 		<button name="operation" value="Add">Add</button>
-		<button name="operation" value="Next">Remove</button>
+		<button name="operation" value="Remove">Remove</button>
 	</form>
 	</fieldset>
 <br />

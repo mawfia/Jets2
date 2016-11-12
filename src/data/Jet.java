@@ -20,7 +20,7 @@ public class Jet implements Comparator<Jet>{
 	private Pilot pilot;
 	
 	public Jet(){
-		this("", "", 0.0F, 0.0F, 0.0F, 0, "", null);
+		this("", "", 0.0F, 0.0F, 0.0F, 0, null, null);
 	}
 	
 	public Jet(String manufacturer, String model, float speed, float range,float price, int fuelCapacity, String photo, Pilot pilot){
@@ -91,7 +91,9 @@ public class Jet implements Comparator<Jet>{
 	}
 	
 	public void setPhoto(String photo){
-		this.photo = photo;
+		if(photo != null) this.photo = "images/" + photo.replaceAll("[^a-zA-Z0-9 ]", "").toLowerCase()+"/1.jpg";
+		//else if(model != null) this.photo = "/WEB-INF/images/" + this.model.replaceAll("[^a-zA-Z0-9 ]", "").toLowerCase()+"/1.jpg";
+		else this.photo = "images/"+ "default/"+((int)(Math.random()*8))+".jpg";
 	}
 	
 	public String getPhoto(){
@@ -125,7 +127,7 @@ public class Jet implements Comparator<Jet>{
 	@Override
 	public String toString() {
 		return "Jet [manufacturer " + manufacturer + " model=" + model + ", speed=" + speed + ", range=" + range + ", price=" + price + ", capacity="
-				+ fuelCapacity + ", pilot=" + pilot + "]";
+				+ fuelCapacity + ", pilot=" + pilot + " photo=" + this.photo +"]";
 	}
 
 	@Override

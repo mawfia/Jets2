@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.context.WebApplicationContext;
 
-
+@Repository
 public class JetFileDAO implements JetDAO{
 
 	private static final String AIRCRAFT_FILE = "/WEB-INF/aircraft.csv";
@@ -35,7 +36,7 @@ public class JetFileDAO implements JetDAO{
 				float range = Float.parseFloat(tokens[3]);
 				float price = Float.parseFloat(tokens[4]);
 				int fuelCapacity = Integer.parseInt(tokens[5]);
-				jets.add(new Jet(manufacturer, model, speed, range, price, fuelCapacity, null, null));
+				jets.add(new Jet(manufacturer, model, speed, range, price, fuelCapacity, model, null));
 			}
 			is.close();
 			buf.close();
@@ -52,7 +53,7 @@ public class JetFileDAO implements JetDAO{
 	
 	@Override
 	public void displayFleet(){
-		for(Jet j: jets) j.display();
+		for(Jet j: jets) System.out.println(j);
 	}
 	
 	@Override
@@ -60,5 +61,6 @@ public class JetFileDAO implements JetDAO{
 	{
 		return jets;
 	}
+	
 	
 }

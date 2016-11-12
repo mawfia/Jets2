@@ -9,5 +9,4 @@ public interface JetDAO {
 	public void displayFleet();
 
 	ArrayList<Jet> getFleet();
-	
 }
