@@ -17,15 +17,15 @@
 	<fieldset>
 	<legend>View Fleet</legend>
 	<c:choose>
-		<c:when test="${ empty index }">
+		<c:when test="${ empty key }">
        		<img src="${fleet.get(keys[0]).photo}" />
     	</c:when>
     	<c:otherwise>
-			<img src="${sessionScope.fleet.get(keys[0]).photo}" />    
+			<img src="${sessionScope.fleet.get(keys[key]).photo}" />    
 		</c:otherwise>
 	</c:choose>
 	<form action="hmenu1.do" method="POST">
-		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aircfat" title="1-2 digits">
+		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aircraft" title="Aircraft Tail Number">
 		<datalist id="json-datalist"> 
 			<c:forEach var="jet" items="${sessionScope.fleet.values()}">
 

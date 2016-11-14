@@ -127,14 +127,7 @@ public class JetFileDAO implements JetDAO{
 		return false;
 	}
 	
-//	public boolean remove(Jet jet){
-//		return jets.remove(jet);
-//	}
-//	
-//	public Jet[] toArray(){		
-//		return (Jet[])jets.toArray();
-//	}
-//	
+
 	@Override
 	public Set<String> toList(){			
 		return null;
@@ -157,14 +150,8 @@ public class JetFileDAO implements JetDAO{
 		for(String t: jets.keySet()) {keyArray[i]=t; i++;}
 		return keyArray;
 	}
-//	
-//	public boolean updateJet(Jet jet){
-//		
-//		if(jet.exists())for(Jet j : jets) { if(j.equals(jet)) j=jet; return true;}
-//		
-//		return false;
-//	}
-//	
+
+
 	@Override
 	public Jet remove(String tailNumber){
 		return jets.remove(tailNumber);

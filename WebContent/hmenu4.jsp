@@ -15,21 +15,21 @@
 	<fieldset>
 	<legend>Remove Aircraft</legend>
 	<c:choose>
-		<c:when test="${ empty index }">
+		<c:when test="${ empty remove }">
        		<img src="${fleet.get(keys[0]).photo}" /><br />
     	</c:when>
     	<c:otherwise>
-			<img src="${sessionScope.fleet.get(keys[0]).photo}" /> <br />   
+			<img src="${sessionScope.fleet.get(remove.tailNumber).photo}" /> <br />   
 		</c:otherwise>
-	</c:choose>
+	</c:choose> 
 	<form action="RemoveJet.do" method="POST">
-		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aircfat" title="1-2 digits">
+		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aircraft" title="1-2 digits" size="40">
 		<datalist id="json-datalist"> 
 			<c:forEach var="jet" items="${sessionScope.fleet.values()}">
 
-				<option value="${jet.tailNumber}">${jet.manufacturer} ${jet.model}</option>
+				<option value="${jet.tailNumber} ${jet.manufacturer} ${jet.model}"></option>
 			</c:forEach> 
-		</datalist><br />
+		</datalist><button name="Select" value="true">Select</button><br />
 
       <input type="submit" value="Submit"> <input type="reset">
       </form>

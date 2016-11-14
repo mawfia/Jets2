@@ -28,7 +28,7 @@ import data.JetFileDAO;
 
 
 @Controller
-@SessionAttributes({"hangerImages", "pilots", "fleet"})
+@SessionAttributes({"hangerImages", "pilots", "fleet", "index"})
 public class HangerController{
 	
 	@Autowired
@@ -75,7 +75,7 @@ public class HangerController{
 
 		    mv.addObject("keys", jets.keyList());
 		  mv.addObject("fleet", jets);
-		  //mv.addObject("index", 0);
+		  //mv.addObject("key", index);
 		mv.setViewName("hmenu1.jsp");
 		return mv;
 	}
@@ -88,7 +88,7 @@ public class HangerController{
 	    mv.addObject("keys", jets.keyList());
 		mv.addObject("fleet", jets);
 		mv.setViewName("hmenu2.jsp");
-//	 mv.addObject("index", 0);
+		//mv.addObject("key", index);
 
 		return mv;
 	}
@@ -104,6 +104,8 @@ public class HangerController{
 	    mv.addObject("keys", jets.keyList());
 		mv.addObject("fleet", jets);
 		mv.addObject("images", images=iDAO.getiDAO());
+		mv.addObject("key", index.toInteger());
+
 //		mv.addObject("index", 0);
 	    System.out.println(s);
 
@@ -121,7 +123,8 @@ public class HangerController{
 		    mv.addObject("keys", jets.keyList());
 			mv.addObject("fleet", jets);
 			mv.addObject("images", images=iDAO.getiDAO());
-			
+			mv.addObject("key", index.toInteger());
+
 			//System.out.println(" op=" + o + " index=" + index + " curIndex=" + curIndex);
 			
 			if(o.equals(1)) mv.setViewName("hmenu3.jsp");
@@ -140,8 +143,8 @@ public class HangerController{
 
 			mv.addObject("fleet", jets);
 			mv.addObject("images", images=iDAO.getiDAO());
-			//index.selectIndex(null, jets.getIndex(b2), jets.size());
-			//mv.addObject("index", jets.keyList()[index.toInteger()]);
+			index.selectIndex(null, jets.getIndex(b2), jets.size());
+			mv.addObject("key", index.toInteger());
 
 			//System.out.println("browser4="+b4 + " browsers2-2=" + b2);
 
@@ -219,13 +222,14 @@ public class HangerController{
 	  }
 	
 	  @RequestMapping(path = "UpdateJet.do", params = {"browsers2"}, method = RequestMethod.POST)
-	  public ModelAndView UpdateJet(@RequestParam("browsers2") String tailNumber, String manufacturer, String model, Float speed, Float range, Float price, Float fuelCapacity,
+	  public ModelAndView UpdateJet(@RequestParam("browsers2") String tailNumber, String manufacturer, String model, Float speed, Float range, Float price, Float fuelCapacity, Boolean Select,
 			  					@ModelAttribute("hangerImages") ArrayList<String> images, 
 			  					@ModelAttribute("fleet") JetFileDAO jets, 
 			  					@ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
-		  	
-		if(jets.put(new Jet(tailNumber, manufacturer, model, (speed == null ? 0.0F : speed.floatValue()),
+		
+		if(Select) {mv.addObject("update", jets.get(tailNumber)); mv.setViewName("hmenu3.jsp"); mv.addObject("fleet", jets); mv.addObject("keys", jets.keyList()); return mv;}
+		else if(jets.put(new Jet(tailNumber, manufacturer, model, (speed == null ? 0.0F : speed.floatValue()),
 				(range == null ? 0.0F : range.floatValue()), (price == null ? 0.0F : price.floatValue()),
 				(fuelCapacity == null ? 0.0F : fuelCapacity.floatValue())))){
 			mv.setViewName("hmenu1.jsp");
@@ -236,10 +240,9 @@ public class HangerController{
 			System.out.println("Error updating aircraft: " + tailNumber);
 			mv.setViewName("hmenu3.jsp");
 		}
-			//System.out.println("manufacuterer=" + manufacturer + " tailNumber=" + tailNumber + " model=" + model + " speed=" + speed);
 
-		  //index.selectIndex(null, jets.getIndex(b2), jets.size());
-			//mv.addObject("index", jets.keyList()[index.toInteger()]);
+		index.selectIndex(null, jets.getIndex(tailNumber), jets.size());
+		mv.addObject("key", index.toInteger());
 		  mv.addObject("keys", jets.keyList());
 		  mv.addObject("fleet", jets);
 		  mv.addObject("images", images=iDAO.getiDAO());
@@ -251,9 +254,12 @@ public class HangerController{
 	  @RequestMapping(path = "RemoveJet.do", params = {"browsers2"}, method = RequestMethod.POST)
 	  public ModelAndView RemoveJet(@RequestParam("browsers2") String tailNumber,
 			  					@ModelAttribute("hangerImages") ArrayList<String> images, 
-			  					@ModelAttribute("fleet") JetFileDAO jets, 
+			  					@ModelAttribute("fleet") JetFileDAO jets, Boolean Select,
 			  					@ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
+		
+		  if(Select) {System.out.println(tailNumber);mv.addObject("remove", jets.get(tailNumber.substring(0, tailNumber.indexOf(" ")))); mv.setViewName("hmenu4.jsp"); mv.addObject("fleet", jets); mv.addObject("keys", jets.keyList()); return mv;}
+
 		  Jet jet = jets.remove(tailNumber);
 		if(jet !=null){
 			mv.setViewName("hmenu1.jsp");
@@ -284,8 +290,8 @@ public class HangerController{
 		    mv.addObject("images", images=iDAO.getiDAO());
 			mv.addObject("fleet", jets);
 			
-//			index.selectIndex(navigation, null, jets.size());
-//			mv.addObject("index", jets.keyList()[index.toInteger()]);
+			index.selectIndex(navigation, null, jets.size());
+			mv.addObject("key", index.toInteger());
 			
 		    mv.setViewName("hmenu1.jsp");
 		  
