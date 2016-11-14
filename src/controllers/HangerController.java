@@ -1,13 +1,17 @@
 package controllers;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.annotation.PostConstruct;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +29,7 @@ import data.JetFileDAO;
 
 @Controller
 @SessionAttributes({"hangerImages", "pilots", "fleet"})
-public class HangerController {
-	int curIndex = 0;
+public class HangerController{
 	
 	@Autowired
 	private ImageFileDAO iDAO;
@@ -44,54 +47,64 @@ public class HangerController {
 	}
 	
 	@ModelAttribute("fleet")
-	public ArrayList<Jet> initJets(){
-		return jets.getFleet();
+	public JetFileDAO initJets(){
+		return jets;
+	}
+	
+	@ModelAttribute("index")
+	public CurrentIndex initIndex() {
+		CurrentIndex ci = new CurrentIndex();
+		return ci;
 	}
 	
 	
 	  @RequestMapping("refresh.do")
-	  public ModelAndView refresh(@ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView refresh(@ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") JetFileDAO jets){
 		  
 		  ModelAndView mv = new ModelAndView().addObject("images", images=iDAO.getiDAO());
+		    mv.addObject("keys", jets.keyList());
 		  mv.addObject("fleet", jets);
 		mv.setViewName("index.jsp");
 		return mv;
 	}
 
 	  @RequestMapping("hmenu1.do")
-	  public ModelAndView view1(@ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView view1(@ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
 
 		  ModelAndView mv = new ModelAndView().addObject("images", images=iDAO.getiDAO());
-		 mv.addObject("fleet", jets);
+
+		    mv.addObject("keys", jets.keyList());
+		  mv.addObject("fleet", jets);
+		  //mv.addObject("index", 0);
 		mv.setViewName("hmenu1.jsp");
 		return mv;
 	}
 	  
 	  @RequestMapping("hmenu2.do")
-	  public ModelAndView view2(@ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView view2(@ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
 
 		ModelAndView mv = new ModelAndView().addObject("images", images=iDAO.getiDAO());
+
+	    mv.addObject("keys", jets.keyList());
 		mv.addObject("fleet", jets);
 		mv.setViewName("hmenu2.jsp");
+//	 mv.addObject("index", 0);
+
 		return mv;
 	}
 	  
-	 public Integer selectHangerAircraftPhoto(String o){
-//		 switch(index){
-//		 case "Previous": return 
-//		 }
-		 return null;
-	 }
-	  
+
 //---------------------------------------------------------------------------------------------	
 
 	  @RequestMapping(path = "route.do", params = "data")
-	  public ModelAndView processData(@RequestParam(name="data", required=false) String s, @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets) {
+	  public ModelAndView Login(@RequestParam(name="data", required=false) String s, @ModelAttribute("hangerImages") ArrayList<String> images, 
+			  						  @ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index) {
 	    String allCaps = s.toUpperCase();
 	    ModelAndView mv = new ModelAndView();
+	    mv.addObject("keys", jets.keyList());
 		mv.addObject("fleet", jets);
 		mv.addObject("images", images=iDAO.getiDAO());
-
+//		mv.addObject("index", 0);
 	    System.out.println(s);
 
 	    mv.setViewName("index.jsp");
@@ -100,33 +113,37 @@ public class HangerController {
 	  }
 	  
 	  @RequestMapping(path = "hmenu1.do", params = {"browsers2", "operation"})
-	  public ModelAndView HangerMenu1(@RequestParam(name="browsers2", required=false) String b2, 
-			  						  @RequestParam(name="operation", required=false) String o, @RequestParam(name="index", required=false) Integer index,
-			  						  @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
-		  ModelAndView mv = new ModelAndView();
+	  public ModelAndView Menu(@RequestParam(name="browsers2", required=false) String b2, 
+			  						  @RequestParam(name="operation", required=false) Integer o, @ModelAttribute("index") CurrentIndex index,
+			  						  @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") JetFileDAO jets){
+		  	ModelAndView mv = new ModelAndView();
+		  	//System.out.println(index);
+		    mv.addObject("keys", jets.keyList());
 			mv.addObject("fleet", jets);
 			mv.addObject("images", images=iDAO.getiDAO());
-
-			if(index == null) mv.addObject("index", index=curIndex=0);
-			else mv.addObject("index", (curIndex=index));
-			System.out.println("browser2-1="+b2 + " op=" + o + " index=" + index);
 			
-		  if(o.equals("Update")) mv.setViewName("hmenu3.jsp");
-		  else if(o.equals("Add")) mv.setViewName("hmenu2.jsp");
-		  else mv.setViewName("hmenu1.jsp");
+			//System.out.println(" op=" + o + " index=" + index + " curIndex=" + curIndex);
+			
+			if(o.equals(1)) mv.setViewName("hmenu3.jsp");
+			else if(o.equals(2)) mv.setViewName("hmenu2.jsp");
+			else if (o.equals(3)) mv.setViewName("hmenu4.jsp");
+			else mv.setViewName("hmenu1.jsp");
 
 		  return mv;
 	  }
 	  
 	  @RequestMapping(path = "hmenu1.do", params = {"browsers4", "browsers2"}, method = RequestMethod.POST)
-	  public ModelAndView HangerMenu2(@RequestParam("browsers4") String b4, @RequestParam("browsers2") String b2,
-			  						  @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView Select(@RequestParam("browsers2") String b2, @RequestParam("browsers4") String b4,
+			  					@ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
+		    mv.addObject("keys", jets.keyList());
+
 			mv.addObject("fleet", jets);
 			mv.addObject("images", images=iDAO.getiDAO());
+			//index.selectIndex(null, jets.getIndex(b2), jets.size());
+			//mv.addObject("index", jets.keyList()[index.toInteger()]);
 
-		  System.out.println("browser4="+b4 + " browsers2-2=" + b2 + " index=" + curIndex);
-//			System.out.println(jets.get(0).getPhoto());
+			//System.out.println("browser4="+b4 + " browsers2-2=" + b2);
 
 		    mv.setViewName("hmenu1.jsp");
 
@@ -134,9 +151,10 @@ public class HangerController {
 	  }
 	  
 	  @RequestMapping(path="hmenu2.do", params = "sort", method = RequestMethod.POST)
-	  public ModelAndView HangerSort(@RequestParam("sort") String s, @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView Sort(@RequestParam("sort") String s, @ModelAttribute("hangerImages") ArrayList<String> images, 
+			  						 @ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
-		    //iDAO.toArrayList(images);
+		    mv.addObject("keys", jets.keyList());
 			mv.addObject("fleet", jets);
 
 		    mv.addObject("images", images=iDAO.getiDAO());
@@ -148,9 +166,10 @@ public class HangerController {
 	  }
 	  
 	  @RequestMapping(path="hmenu2.do", params = {"search", "input"}, method = RequestMethod.POST)
-	  public ModelAndView HangerSearch1(@RequestParam("search") String s, @RequestParam("input") String i, @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView Search1(@RequestParam("search") String s, @RequestParam("input") String i, @ModelAttribute("hangerImages") ArrayList<String> images, 
+			  							@ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
-		    //iDAO.toArrayList(images);
+		    mv.addObject("keys", jets.keyList());
 			mv.addObject("fleet", jets);
 
 		    mv.addObject("images", images=iDAO.getiDAO());
@@ -162,9 +181,10 @@ public class HangerController {
 	  }
 	  
 	  @RequestMapping(path="hmenu2.do", params = "search", method = RequestMethod.POST)
-	  public ModelAndView HangerSearch2(@RequestParam("search") String s, @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView Search2(@RequestParam("search") String s, @ModelAttribute("hangerImages") ArrayList<String> images, 
+			  							@ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
-		    //iDAO.toArrayList(images);
+		    mv.addObject("keys", jets.keyList());
 		    mv.addObject("images", images=iDAO.getiDAO());
 			mv.addObject("fleet", jets);
 
@@ -175,22 +195,154 @@ public class HangerController {
 	  }
 	  
 	  @RequestMapping(path="AddJet.do", method=RequestMethod.POST)
-	  public ModelAndView AddJet(Jet jet, @ModelAttribute("hangerImages") ArrayList<String> images, @ModelAttribute("fleet") ArrayList<Jet> jets){
+	  public ModelAndView AddJet(String tailNumber, String manufacturer, String model, Float speed, Float range, Float price, Float fuelCapacity,
+			  						@ModelAttribute("hangerImages") ArrayList<String> images,
+			  							  @ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
+		  
+		 
 		  ModelAndView mv = new ModelAndView();
-		  //jet.setPhoto(jet.getModel());
-		  if(jets.add(jet)) mv.setViewName("hmenu1.jsp");
+		  if(jets.add(new Jet(tailNumber, manufacturer, model, (speed == null? 0.0F: speed.floatValue()), 
+				  			 (range == null ? 0.0F: range.floatValue()), (price == null? 0.0F: price.floatValue()),
+				  			 (fuelCapacity == null? 0.0F: fuelCapacity.floatValue()))) == true){
+			  mv.setViewName("hmenu1.jsp");
+			  System.out.println("Successfully added jet to inventory");
+		  }
 		  else{ 	
-			  		mv.setViewName("AddJet.do");
-		  			mv.addObject("jet", jet);
+			  		System.out.println("Error adding jet");
+			  		mv.setViewName("hmenu2.jsp");
 		  		}
 		  mv.addObject("fleet", jets);
-		    mv.addObject("images", images=iDAO.getiDAO());
-
-		  for(Jet j: jets) System.out.println(j);
-		  //mv.addObject("images", images=iDAO.getiDAO());
-		  //for(int i = 0; i < images.size(); i++) System.out.println(images.get(i));
+		  mv.addObject("images", images=iDAO.getiDAO());
+		  mv.addObject("keys", jets.keyList());
 		  
 		  return mv;
 	  }
 	
+	  @RequestMapping(path = "UpdateJet.do", params = {"browsers2"}, method = RequestMethod.POST)
+	  public ModelAndView UpdateJet(@RequestParam("browsers2") String tailNumber, String manufacturer, String model, Float speed, Float range, Float price, Float fuelCapacity,
+			  					@ModelAttribute("hangerImages") ArrayList<String> images, 
+			  					@ModelAttribute("fleet") JetFileDAO jets, 
+			  					@ModelAttribute("index") CurrentIndex index){
+		  ModelAndView mv = new ModelAndView();
+		  	
+		if(jets.put(new Jet(tailNumber, manufacturer, model, (speed == null ? 0.0F : speed.floatValue()),
+				(range == null ? 0.0F : range.floatValue()), (price == null ? 0.0F : price.floatValue()),
+				(fuelCapacity == null ? 0.0F : fuelCapacity.floatValue())))){
+			mv.setViewName("hmenu1.jsp");
+			System.out.println("Successfully updated aircraft: " + tailNumber);
+			jets.displayAll();
+		}
+		else {
+			System.out.println("Error updating aircraft: " + tailNumber);
+			mv.setViewName("hmenu3.jsp");
+		}
+			//System.out.println("manufacuterer=" + manufacturer + " tailNumber=" + tailNumber + " model=" + model + " speed=" + speed);
+
+		  //index.selectIndex(null, jets.getIndex(b2), jets.size());
+			//mv.addObject("index", jets.keyList()[index.toInteger()]);
+		  mv.addObject("keys", jets.keyList());
+		  mv.addObject("fleet", jets);
+		  mv.addObject("images", images=iDAO.getiDAO());
+		  mv.setViewName("hmenu1.jsp");
+
+		  return mv;
+	  }
+	  
+	  @RequestMapping(path = "RemoveJet.do", params = {"browsers2"}, method = RequestMethod.POST)
+	  public ModelAndView RemoveJet(@RequestParam("browsers2") String tailNumber,
+			  					@ModelAttribute("hangerImages") ArrayList<String> images, 
+			  					@ModelAttribute("fleet") JetFileDAO jets, 
+			  					@ModelAttribute("index") CurrentIndex index){
+		  ModelAndView mv = new ModelAndView();
+		  Jet jet = jets.remove(tailNumber);
+		if(jet !=null){
+			mv.setViewName("hmenu1.jsp");
+			System.out.println("Successfully removed: " + jet);
+			jets.displayAll();
+		}
+		else {
+			System.out.println("The following aircraft was not found in the inventory: \n" + jet);
+			mv.setViewName("hmenu3.jsp");
+		}
+			//System.out.println("manufacuterer=" + manufacturer + " tailNumber=" + tailNumber + " model=" + model + " speed=" + speed);
+
+		  //index.selectIndex(null, jets.getIndex(b2), jets.size());
+			//mv.addObject("index", jets.keyList()[index.toInteger()]);
+		  mv.addObject("keys", jets.keyList());
+		  mv.addObject("fleet", jets);
+		  mv.addObject("images", images=iDAO.getiDAO());
+		  mv.setViewName("hmenu1.jsp");
+
+		  return mv;
+	  }
+	  
+	  @RequestMapping(path="hmenu1.do", params = "navigation", method = RequestMethod.POST)
+	  public ModelAndView PrevHomeNext(@RequestParam("navigation") Integer navigation, @ModelAttribute("hangerImages") ArrayList<String> images, 
+			  							@ModelAttribute("fleet") JetFileDAO jets, @ModelAttribute("index") CurrentIndex index){
+		  ModelAndView mv = new ModelAndView();
+		    mv.addObject("keys", jets.keyList());
+		    mv.addObject("images", images=iDAO.getiDAO());
+			mv.addObject("fleet", jets);
+			
+//			index.selectIndex(navigation, null, jets.size());
+//			mv.addObject("index", jets.keyList()[index.toInteger()]);
+			
+		    mv.setViewName("hmenu1.jsp");
+		  
+		  return mv;
+	  }
+	  
+}
+
+@Repository
+class CurrentIndex {
+	private Integer index;
+	
+	
+	public CurrentIndex () {
+		this.index = 0;
+	}
+	
+	public void selectIndex(Integer selection1, Integer selection2, int size){
+		if (selection1 != null) 
+		{
+			if(selection1 == 0) this.index = 0;
+			else if (selection1 + this.index > size - 1) this.index = 0;
+			else if (selection1 + this.index < 0) this.index = size - 1;
+			else this.index = selection1 + this.index;
+		} 
+		else if (selection2 != null) if (selection2 < size - 1 && selection2 > 0) this.index = selection2;
+
+	}
+	
+	public Integer toInteger(){
+		
+		return this.index;
+	}
+
+	public void increment() {
+		this.index++;
+	}
+
+	
+	public void decrement() {
+		this.index--;
+	}
+
+	
+	public void setIndex(Integer i) {
+		this.index = i;
+	}
+
+	public Integer getIndex() {
+		return this.index;
+	}
+
+	@Override
+	public String toString() {
+		return "CurrentIndex [index=" + index + "]";
+	}
+	
+	
+
 }

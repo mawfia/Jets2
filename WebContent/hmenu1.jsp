@@ -10,35 +10,35 @@
 </head>
 <body>
 	<p>${images[0]}</p>
-	<a href="route.do?data=" >Main Menu</a><br />
+	<a href="route.do?data=frog" >Main Menu</a><br />
 	<a href="pmenu1.jsp" >Barracks</a>
 	
+
 	<fieldset>
 	<legend>View Fleet</legend>
 	<c:choose>
-		<c:when test="${empty index}">
-       		<img src="${fleet[0].photo}" />
+		<c:when test="${ empty index }">
+       		<img src="${fleet.get(keys[0]).photo}" />
     	</c:when>
     	<c:otherwise>
-		<c:set var="i" scope="page" value="${index}"/>
-			<img src="${fleet[i].photo}" />    
+			<img src="${sessionScope.fleet.get(keys[0]).photo}" />    
 		</c:otherwise>
 	</c:choose>
 	<form action="hmenu1.do" method="POST">
-		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="???" title="1-2 digits">
+		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aircfat" title="1-2 digits">
 		<datalist id="json-datalist"> 
-			<c:forEach var="jet" items="${fleet}">
+			<c:forEach var="jet" items="${sessionScope.fleet.values()}">
 
-				<option value="${jet.manufacturer}">${jet.model}</option>
+				<option value="${jet.tailNumber}">${jet.manufacturer} ${jet.model}</option>
 			</c:forEach> 
 		</datalist>
-		<button name="operation" value="-1">Previous</button>
-		<button name="operation" value="0">Home</button>
-		<button name="operation" value="1">Next</button>
+		<button name="navigation" value="-1">Previous</button>
+		<button name="navigation" value="0">Home</button>
+		<button name="navigation" value="1">Next</button>
 		<input type="submit" value="Select" name="browsers4" autofocus>
-		<button name="operation" value="Update">Update</button>
-		<button name="operation" value="Add">Add</button>
-		<button name="operation" value="Remove">Remove</button>
+		<button name="operation" value="1">Update</button>
+		<button name="operation" value="2">Add</button>
+		<button name="operation" value="3">Remove</button>
 	</form>
 	</fieldset>
 <br />

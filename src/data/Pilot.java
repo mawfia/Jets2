@@ -69,14 +69,15 @@ public class Pilot implements Comparator<Pilot>{
 	
 	public boolean exists(){
 		
-		if(this.getFirstname() == null || this.getFirstname() == "" || this.getFirstname().length() == 0) return false;
-		
+		if(this.firstname == null || this.firstname == "" || this.firstname.length() == 0) return false;
+		if(this.lastname == null || this.lastname == "" || this.lastname.length() == 0) return false;
+
 		return true;
 	}
 	
 	public void display() {
 		
-		if( exists() == true )
+		if( exists() )
 		{
 			String fname = getFirstname().toUpperCase().substring(0,1) + getFirstname().substring(1);
 			String lname = getLastname().toUpperCase().substring(0,1) + getLastname().substring(1);

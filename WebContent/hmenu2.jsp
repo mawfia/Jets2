@@ -28,20 +28,33 @@
 <%-- 	</form> --%>
 <!-- 	</fieldset> -->
 
-
- <form action="AddJet.do" method="POST">
+<fieldset>
+<legend>Add Aircraft</legend>
+ 	  <form action="AddJet.do" method="POST">
+  	  <label for="tailNumber">Tail Number:</label>
+      <input type="text" name="tailNumber" maxlength="15" pattern="[a-zA-z0-9]" title="Alphanumeric characters only">
+      <br>
       <label for="manufacturer">Manufacturer:</label>
-      <input type="text" name="Manufacturer" required>
+      <input type="text" name="manufacturer" maxlength="30"  required>
       <br>
-      <label for="model">Model:</label>
-      <input type="text" name="model" required>
+      <label for="model">Model:</label >
+      <input type="text" name="model" maxlength="30" required>
       <br>
-      <label for="speed">Speed:</label>
-      <input type="text" name="speed" required>
+      <label for="speed">Speed:</label >
+      <input type="text" name="speed" pattern="[\d]{1,10}" title="Numbers only">
       <br>
-      <input type="submit" value="Submit">
-    </form>
-
+       <label for="range">Range:</label>
+      <input type="text" name="range" pattern="[\d]{1,10}" title="Numbers only">
+      <br>
+       <label for="price">price:</label>
+      <input type="text" name="price" pattern="[\d]{1,10}" title="Numbers only">
+      <br>
+       <label for="fuelCapacity">Fuel Capacity:</label>
+      <input type="text" name="fuelCapacity" pattern="[\d]{1,10}" title="Numbers only">
+      <br>
+      <input type="submit" value="Submit"> <input type="reset">
+      </form>
+</fieldset>
 
 
 	
