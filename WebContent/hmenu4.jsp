@@ -23,7 +23,7 @@
 		</c:otherwise>
 	</c:choose> 
 	<form action="RemoveJet.do" method="POST">
-		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aircraft" title="1-2 digits" size="40">
+		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aircraft" title="1-2 digits" size="40" value="${remove.tailNumber}">
 		<datalist id="json-datalist"> 
 			<c:forEach var="jet" items="${sessionScope.fleet.values()}">
 

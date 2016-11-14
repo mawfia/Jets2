@@ -214,6 +214,7 @@ public class HangerController{
 			  		System.out.println("Error adding jet");
 			  		mv.setViewName("hmenu2.jsp");
 		  		}
+		  index.selectIndex(null, jets.getIndex(tailNumber), jets.size());
 		  mv.addObject("fleet", jets);
 		  mv.addObject("images", images=iDAO.getiDAO());
 		  mv.addObject("keys", jets.keyList());
@@ -223,18 +224,22 @@ public class HangerController{
 	
 	  @RequestMapping(path = "UpdateJet.do", params = {"browsers2"}, method = RequestMethod.POST)
 	  public ModelAndView UpdateJet(@RequestParam("browsers2") String tailNumber, String manufacturer, String model, Float speed, Float range, Float price, Float fuelCapacity, Boolean Select,
-			  					@ModelAttribute("hangerImages") ArrayList<String> images, 
+			  					@ModelAttribute("hangerImages") ArrayList<String> images, Boolean reset,
 			  					@ModelAttribute("fleet") JetFileDAO jets, 
 			  					@ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
-		
-		if(Select) {mv.addObject("update", jets.get(tailNumber)); mv.setViewName("hmenu3.jsp"); mv.addObject("fleet", jets); mv.addObject("keys", jets.keyList()); return mv;}
-		else if(jets.put(new Jet(tailNumber, manufacturer, model, (speed == null ? 0.0F : speed.floatValue()),
-				(range == null ? 0.0F : range.floatValue()), (price == null ? 0.0F : price.floatValue()),
-				(fuelCapacity == null ? 0.0F : fuelCapacity.floatValue())))){
-			mv.setViewName("hmenu1.jsp");
-			System.out.println("Successfully updated aircraft: " + tailNumber);
-			jets.displayAll();
+		//if(reset) System.out.println("reset selected");
+		if(Select != null) {mv.addObject("update", jets.get(tailNumber)); mv.setViewName("hmenu3.jsp"); mv.addObject("fleet", jets); mv.addObject("keys", jets.keyList()); return mv;}
+		else if (tailNumber != null)
+		{
+			if(jets.put(new Jet(tailNumber, manufacturer, model, (speed == null ? 0.0F : speed.floatValue()),
+					(range == null ? 0.0F : range.floatValue()), (price == null ? 0.0F : price.floatValue()),
+					(fuelCapacity == null ? 0.0F : fuelCapacity.floatValue())))){
+				mv.setViewName("hmenu1.jsp");
+				index.selectIndex(null, jets.getIndex(tailNumber), jets.size());
+				System.out.println("Successfully updated aircraft: " + tailNumber);
+				jets.displayAll();
+			}
 		}
 		else {
 			System.out.println("Error updating aircraft: " + tailNumber);
@@ -257,23 +262,48 @@ public class HangerController{
 			  					@ModelAttribute("fleet") JetFileDAO jets, Boolean Select,
 			  					@ModelAttribute("index") CurrentIndex index){
 		  ModelAndView mv = new ModelAndView();
-		
-		  if(Select) {System.out.println(tailNumber);mv.addObject("remove", jets.get(tailNumber.substring(0, tailNumber.indexOf(" ")))); mv.setViewName("hmenu4.jsp"); mv.addObject("fleet", jets); mv.addObject("keys", jets.keyList()); return mv;}
 
-		  Jet jet = jets.remove(tailNumber);
-		if(jet !=null){
-			mv.setViewName("hmenu1.jsp");
-			System.out.println("Successfully removed: " + jet);
-			jets.displayAll();
-		}
-		else {
-			System.out.println("The following aircraft was not found in the inventory: \n" + jet);
-			mv.setViewName("hmenu3.jsp");
-		}
-			//System.out.println("manufacuterer=" + manufacturer + " tailNumber=" + tailNumber + " model=" + model + " speed=" + speed);
+		  if(Select != null && tailNumber != null){
+			  System.out.println(tailNumber);
 
-		  //index.selectIndex(null, jets.getIndex(b2), jets.size());
-			//mv.addObject("index", jets.keyList()[index.toInteger()]);
+			  try{
+				  mv.addObject("remove", jets.get(tailNumber.split(" ")[0]));
+				  mv.setViewName("hmenu4.jsp"); 
+				  mv.addObject("fleet", jets); 
+				  mv.addObject("keys", jets.keyList()); 
+				  index.selectIndex(null, jets.getIndex(tailNumber), jets.size());
+				  return mv;
+			  }
+			  catch(StringIndexOutOfBoundsException e)
+			  {
+				  System.err.println(e);
+			  }
+			  
+		  }
+		  else if (tailNumber != null)
+		  {
+			  System.out.println(tailNumber);
+			  try{
+				  Jet jet = jets.remove(tailNumber.split(" ")[0]);
+				  if(jet !=null){
+					  mv.setViewName("hmenu1.jsp");
+					  System.out.println("Successfully removed: " + jet);
+					  jets.displayAll();
+				  }
+			  }
+			  catch (StringIndexOutOfBoundsException e)
+			  {
+				  System.err.println(e);
+			  
+			  }
+		  }
+		  else {
+			  mv.setViewName("hmenu3.jsp");
+			  jets.displayAll();
+
+		  }
+
+		  index.selectIndex(null, jets.getIndex(tailNumber), jets.size());
 		  mv.addObject("keys", jets.keyList());
 		  mv.addObject("fleet", jets);
 		  mv.addObject("images", images=iDAO.getiDAO());

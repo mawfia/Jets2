@@ -86,7 +86,7 @@ public class Jet implements Comparator<Jet>{
 	}
 
 	public void setSpeed(float speed) {
-		if(speed >=0 && speed < 10000) this.speed = speed;
+		if(speed >=0 && speed < 50000) this.speed = speed;
 		else this.speed = 0.0F;
 	}
 
@@ -103,7 +103,7 @@ public class Jet implements Comparator<Jet>{
 	}
 
 	public void setPrice(float price) {
-		if(price >= 0 && price < 20000) this.price = price;
+		if(price >= 0 && price < 2__000_000_000) this.price = price;
 		else this.price = 0.0F;
 	}
 

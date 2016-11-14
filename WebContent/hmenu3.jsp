@@ -23,7 +23,7 @@
 		</c:otherwise>
 	</c:choose>
 	<form action="UpdateJet.do" method="POST">
-		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aicraft" title="1-2 digits">
+		<input type="text" id="ajax" list="json-datalist" name="browsers2" placeholder="Select Aicraft" title="Tail Number" value="${update.tailNumber}">
 		<datalist id="json-datalist"> 
 			<c:forEach var="jet" items="${sessionScope.fleet.values()}">
 
@@ -44,7 +44,7 @@
       <input type="text" name="range" pattern="\d{0,10}\.{0,1}\d{0,2}" title="1-12 Deceimal Numbers Only" value="${update.range}">
       <br>
        <label for="price">price:</label>
-      <input type="text" name="price" pattern="\d{0,10}\.{0,1}\d{0,2}" title="1-12 Deceimal Numbers Only" value="${update.price}">
+      <input type="text" name="price" pattern="\d{0,15}\.{0,1}\d{0,2}" size="40" title="1-17 Deceimal Numbers Only" value="${update.price}">
       <br>
        <label for="fuelCapacity">Fuel Capacity:</label>
       <input type="text" name="fuelCapacity" pattern="\d{0,10}\.{0,1}\d{0,2}" title="1-12 Deceimal Numbers Only" value="${update.fuelCapacity}">
@@ -56,7 +56,7 @@
       <input type="text" name="pilot" pattern="[a-zA-Z]{25}" title="Last Name" placeholder="Pilot's Last Name" disabled>
       <br>
       <input type="submit" value="Submit">
-      <input type="reset" id="ajax">
+      <input type="reset" id="ajax" name="reset" >
       </form>
 	</fieldset>
 </body>
