@@ -325,30 +325,6 @@ class CurrentIndex {
 		
 		return this.index;
 	}
-
-	public void increment() {
-		this.index++;
-	}
-
-	
-	public void decrement() {
-		this.index--;
-	}
-
-	
-	public void setIndex(Integer i) {
-		this.index = i;
-	}
-
-	public Integer getIndex() {
-		return this.index;
-	}
-
-	@Override
-	public String toString() {
-		return "CurrentIndex [index=" + index + "]";
-	}
-	
 	
 
 }

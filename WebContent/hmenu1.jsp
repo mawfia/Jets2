@@ -10,7 +10,7 @@
 </head>
 <body>
 	<p>${images[0]}</p>
-	<a href="route.do?data=frog" >Main Menu</a><br />
+	<a href="route.do?data=" >Main Menu</a><br />
 	<a href="pmenu1.jsp" >Barracks</a>
 	
 

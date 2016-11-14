@@ -4,24 +4,25 @@
 <head>
 <meta charset="UTF-8">
 <title>Welcome to the Hanger</title>
+<link rel="stylesheet" type="text/css" href="login.css">
 </head>
 <body>
-	<a href="hmenu1.do?">Hanger</a><br />
+	<a href="hmenu1.do?data=" >Hanger</a><br />
 	<a href="pmenu1.jsp?">Barracks</a>
-
-	<c:choose>
-		<c:when test="${! empty images}">
-			<p>${images[0]}</p>
-		</c:when>
+	<div class="container">
+		<c:choose>
+			<c:when test="${! empty images}">
+				<img src="${images[2]}" />
+			</c:when>
 		<c:otherwise>
-			<p>${iDAO[0]}</p>
-
+			<img src="${iDAO[0]}"/>
 		</c:otherwise>
 	</c:choose>
-
-	<form action="route.do" method="GET">
-		<input type="text" name="data" value="${result}" /><br /> <input
-			type="submit" value="Submit" /><br />
+	</div>
+	<form action="route.do" method="GET" class="center">
+	<input type="text" name="username" value="" placeholder="Username"/>
+	<input type="text" name="data" value="" placeholder="Password"/><br /> <input
+			type="submit" value="Submit" id="login"/><input type="reset" id="login"><br />
 	</form>
 </body>
 </html>
