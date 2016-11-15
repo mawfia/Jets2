@@ -6,6 +6,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Remove Aircraft from Inventory</title>
+<link rel="stylesheet" type="text/css" href="hmenu1.css">
 </head>
 <body>
 	<p>${images[0]}</p> 

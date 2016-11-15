@@ -12,7 +12,7 @@
 	<div class="container">
 		<c:choose>
 			<c:when test="${! empty images}">
-				<img src="${images[2]}" />
+				<img src="${images[3]}" />
 			</c:when>
 		<c:otherwise>
 			<img src="${iDAO[0]}"/>

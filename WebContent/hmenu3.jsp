@@ -6,6 +6,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Update Aircraft</title>
+<link rel="stylesheet" type="text/css" href="hmenu1.css">
+
 </head>
 <body>
 	<p>${images[0]}</p> 
@@ -32,7 +34,7 @@
 		</datalist><button name="Select" value="true">Select</button><br />
 
       <label for="manufacturer">Manufacturer:</label>
-      <input type="text" name="manufacturer" maxlength="30"value="${update.manufacturer}">
+      <input type="text" name="manufacturer" maxlength="30" size="40" value="${update.manufacturer}">
       <br>
       <label for="model">Model:</label >
       <input type="text" name="model" maxlength="30" value="${update.model}">
@@ -61,38 +63,3 @@
 	</fieldset>
 </body>
 </html>
-
-
-
-<!-- <fieldset> -->
-<!-- 	<legend>Update Aircraft</legend> -->
-<%-- 	<img src="${fleet.get(keys[0]).photo}" />	<br/> --%>
-
-<!-- 		<input type="text" id="ajax" list="json-datalist" name="update" placeholder="Enter/Select Tail Number" > -->
-<!-- 		<datalist id="json-datalist">  -->
-<%-- 			<c:forEach var="jet" items="${sessionScope.fleet.values()}"> --%>
-<%-- 				<option value="${jet.tailNumber}">${jet.manufacturer} ${jet.model} ${jet.pilot}</option> --%>
-<%-- 			</c:forEach>  --%>
-<!-- 		</datalist> -->
-<!--  	<form action="UpdateJet.do" method="POST"> -->
-<!--       <label for="manufacturer">Manufacturer:</label> -->
-<!--       <input type="text" name="manufacturer" maxlength="30" > -->
-<!--       <br> -->
-<!--       <label for="model">Model:</label > -->
-<!--       <input type="text" name="model" maxlength="30" > -->
-<!--       <br> -->
-<!--       <label for="speed">Speed:</label > -->
-<!--       <input type="text" name="speed" > -->
-<!--       <br> -->
-<!--        <label for="range">Range:</label> -->
-<!--       <input type="text" name="range" > -->
-<!--       <br> -->
-<!--        <label for="price">price:</label> -->
-<!--       <input type="text" name="price" > -->
-<!--       <br> -->
-<!--        <label for="fuelCapacity">Fuel Capacity:</label> -->
-<!--       <input type="text" name="fuelCapacity" > -->
-<!--       <br> -->
-<!--       <input type="submit" value="Submit"> <input type="reset"> -->
-<!--       </form> -->
-<!-- 	</fieldset> -->

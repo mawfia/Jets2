@@ -7,9 +7,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <title>Hanger</title>
+<link rel="stylesheet" type="text/css" href="hmenu1.css">
+
 </head>
-<body>
-	<p>${images[0]}</p>
+<%-- <body style="background-image: url('${images[3]}')"> --%>
 	<a href="route.do?data=" >Main Menu</a><br />
 	<a href="pmenu1.jsp" >Barracks</a>
 	
