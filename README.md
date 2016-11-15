@@ -34,7 +34,7 @@ TECHNOLOGY USED:
 
 3.  Maven was used to manage the libries for XML dependencies.
 
-4.  Front-end operations such as regular expressions for exception prevention and dynamicly populated fields and drop-down lists were implemented using HTML5 and CSS.
+4.  Front-end operations such as regular expressions for exception prevention and dynamically populated fields and drop-down lists were implemented using HTML5 and CSS.
 
 5.  Apache Tomcat is used as the server for execution and JSP and JSPTL handle client requets.
 
