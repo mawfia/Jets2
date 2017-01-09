@@ -1,5 +1,6 @@
 # Jets2 Project
 2nd Individual Project in Quad 2 created 4 November 2016
+(Updated) Jets3 is currently being developed and will be a revised and updated version of Jets2.
 
 GENERAL USAGE NOTES:
 --------------------
