@@ -1,4 +1,4 @@
-# Jets2 Project
+i# Jets2 Project
 2nd Individual Project in Quad 2 created 4 November 2016.
 
 (Update, 9 January 2017) Jets3 is currently being developed and will be a revised and updated version of Jets2.
@@ -6,7 +6,7 @@
 GENERAL USAGE NOTES:
 --------------------
 This was my first Spring/MVC CRUD project designed, built, and deployed to cloud services from scratch and in five days.
-It is a revist of of my original Jets project, but in concept only.  All design and logic were independent of the original project.
+It is a revisit of of my original Jets project, but in concept only.  All design and logic were independent of the original project.
 
 -The purpose of Jets2 is to provide a user the ability to store aircraft information through creation, reading, updating and 
 removal of aircraft in their inventory.
